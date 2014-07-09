@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/layout_size_96dp"
+    android:layout_height="@dimen/layout_size_96dp"
+    android:background="@drawable/progress_dialog"
+    >
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_centerInParent="true"
+        android:layout_width="@dimen/layout_size_36dp"
+        android:layout_height="@dimen/layout_size_36dp" />
+
+</RelativeLayout>

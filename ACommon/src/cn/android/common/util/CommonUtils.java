@@ -10,14 +10,16 @@ import java.util.regex.Pattern;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.FragmentActivity;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.View;
-
 import cn.android.common.R;
 
 /**
@@ -79,7 +81,7 @@ public class CommonUtils {
 	}
 
 	/**
-	 * ¼ÆËãµØÍ¼ÖÐÁ½µã¼äµÄÊµ¼Ê¾àÀë
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½Ê¾ï¿½ï¿½ï¿½
 	 * 
 	 * @param lat1
 	 * @param lng1
@@ -178,7 +180,7 @@ public class CommonUtils {
 	}
 	
 	/**
-	 * ½øÐÐ½ØÈ¡ÆÁÄ»
+	 * Take a screen shot
 	 * 
 	 * @param activity
 	 * @return bitmap
@@ -186,24 +188,35 @@ public class CommonUtils {
 	public static Bitmap takeScreenShot(Activity activity) {
 		Bitmap bitmap = null;
 		View view = activity.getWindow().getDecorView();
-		// ÉèÖÃÊÇ·ñ¿ÉÒÔ½øÐÐ»æÍ¼»º´æ
 		view.setDrawingCacheEnabled(true);
-		// Èç¹û»æÍ¼»º´æÎÞ·¨£¬Ç¿ÖÆ¹¹½¨»æÍ¼»º´æ
 		view.buildDrawingCache();
-		// ·µ»ØÕâ¸ö»º´æÊÓÍ¼
 		bitmap = view.getDrawingCache();
 
-		// »ñÈ¡×´Ì¬À¸¸ß¶È
 		Rect frame = new Rect();
-		// ²âÁ¿ÆÁÄ»¿íºÍ¸ß
 		view.getWindowVisibleDisplayFrame(frame);
 		int stautsHeight = frame.top;
 
 		int width = activity.getWindowManager().getDefaultDisplay().getWidth();
 		int height = activity.getWindowManager().getDefaultDisplay().getHeight();
-		// ¸ù¾Ý×ø±êµãºÍÐèÒªµÄ¿íºÍ¸ß´´½¨bitmap
 		bitmap = Bitmap.createBitmap(bitmap, 0, stautsHeight, width, height - stautsHeight);
 		return bitmap;
+	}
+	
+	/**
+	 * Get device IMEI id : phone has, but pad hasn't
+	 * @param context
+	 * @return
+	 */
+	public static String getIMEI(Context context) {
+		return ((TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+	}
+	
+	public static void setScreenOrientation(FragmentActivity activity) {
+		if (TextUtils.isEmpty(getIMEI(activity))) {
+			activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
+		} else {
+			activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		}
 	}
 
 }

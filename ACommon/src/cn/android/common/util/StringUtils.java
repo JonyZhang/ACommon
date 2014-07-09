@@ -118,7 +118,7 @@ public class StringUtils {
     public static String utf8Encode(String str) {
         if (!isEmpty(str) && str.getBytes().length != str.length()) {
             try {
-                return URLEncoder.encode(str, "UTF-8");
+                return URLEncoder.encode(URLEncoder.encode(str, "utf-8"), "utf-8");
             } catch (UnsupportedEncodingException e) {
                 throw new RuntimeException("UnsupportedEncodingException occurred. ", e);
             }
