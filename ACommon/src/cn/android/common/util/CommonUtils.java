@@ -19,7 +19,10 @@ import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import cn.android.common.R;
 
 /**
@@ -203,7 +206,7 @@ public class CommonUtils {
 	}
 	
 	/**
-	 * Get device IMEI id : phone has, but pad hasn't
+	 * Get device IMEI id
 	 * @param context
 	 * @return
 	 */
@@ -212,11 +215,36 @@ public class CommonUtils {
 	}
 	
 	public static void setScreenOrientation(FragmentActivity activity) {
-		if (TextUtils.isEmpty(getIMEI(activity))) {
-			activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
+		if (isTablet(activity)) {
+			activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 		} else {
 			activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}
+	}
+	
+	/**
+	 * Judge a device is a phone or a tablet
+	 * 
+	 * @return true is a tablet, false otherwise.
+	 */
+	public static boolean isTablet(Context context) {
+//		WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);  
+//	    Display display = wm.getDefaultDisplay();  
+//	    float screenWidth = display.getWidth();  
+//	    float screenHeight = display.getHeight();  
+//	    DisplayMetrics dm = new DisplayMetrics();  
+//	    display.getMetrics(dm);
+		
+		DisplayMetrics dm = context.getResources().getDisplayMetrics();
+		double x = Math.pow(dm.widthPixels / dm.xdpi, 2);
+		double y = Math.pow(dm.heightPixels / dm.ydpi, 2);
+		// 屏幕尺寸
+		double screenInches = Math.sqrt(x + y);
+		// 大于6尺寸则为Pad
+		if (screenInches >= 6.0) {
+			return true;
+		}
+		return false;
 	}
 
 }
