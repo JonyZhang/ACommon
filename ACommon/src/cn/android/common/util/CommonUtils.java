@@ -241,7 +241,7 @@ public class CommonUtils {
 		// 屏幕尺寸
 		double screenInches = Math.sqrt(x + y);
 		// 大于6尺寸则为Pad
-		if (screenInches >= 6.0) {
+		if (screenInches >= 4.0) {
 			return true;
 		}
 		return false;
