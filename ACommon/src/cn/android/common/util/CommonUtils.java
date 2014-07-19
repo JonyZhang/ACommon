@@ -16,6 +16,7 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -206,6 +207,15 @@ public class CommonUtils {
 	}
 	
 	/**
+	 * Get Android ID
+	 * @param context
+	 * @return android id
+	 */
+	public static String getAndroidId(Context context) {
+		return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+	}
+	
+	/**
 	 * Get device IMEI id
 	 * @param context
 	 * @return
@@ -238,13 +248,16 @@ public class CommonUtils {
 		DisplayMetrics dm = context.getResources().getDisplayMetrics();
 		double x = Math.pow(dm.widthPixels / dm.xdpi, 2);
 		double y = Math.pow(dm.heightPixels / dm.ydpi, 2);
-		// 屏幕尺寸
 		double screenInches = Math.sqrt(x + y);
-		// 大于6尺寸则为Pad
 		if (screenInches >= 6.0) {
 			return true;
 		}
 		return false;
 	}
+	
+	public static String getLocalLanguage(Context context) {
+		return context.getResources().getConfiguration().locale.getLanguage();
+	}
+	
 
 }

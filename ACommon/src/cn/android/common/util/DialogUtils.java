@@ -28,7 +28,7 @@ public class DialogUtils {
 	}
 	
 	public static void showProgressDialog(Context context) {
-		showProgressDialog(context, context.getResources().getString(R.string.please_wait));
+		showProgressDialog(context, "请稍候...");
 	}
 	
 	public static Dialog showCustomDialog(Context context, int dialogStyle, int contenView, int gravity, boolean touchOutSide, LayoutParams params) {

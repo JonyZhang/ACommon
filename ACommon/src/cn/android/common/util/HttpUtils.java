@@ -175,6 +175,7 @@ public class HttpUtils {
 		while ((s = input.readLine()) != null) {
 			sb.append(s).append("\n");
 		}
+		LogUtils.d(TAG, "http post response = " + sb.toString());
 		response.setResponseBody(sb.toString());
 		setHttpResponse(con, response);
 		return response;
@@ -196,7 +197,6 @@ public class HttpUtils {
     
 	public static HttpResponseEntity httpPost(String url, HttpEntity entity) throws ClientProtocolException, IOException {
 
-		Log.d(TAG, "doPost url = " + url);
 		HttpResponseEntity response = new HttpResponseEntity();
 		response.setUrl(url);
 		HttpClient httpClient = new DefaultHttpClient();
@@ -208,14 +208,15 @@ public class HttpUtils {
 		response.setResponseCode(statusCode);
 		LogUtils.d(TAG, "statusCode = " + statusCode);
 		if (statusCode == HttpURLConnection.HTTP_OK) {
-			response.setResponseBody(EntityUtils.toString(resp.getEntity(), HTTP.UTF_8));
+			String temp = EntityUtils.toString(resp.getEntity(), HTTP.UTF_8);
+			LogUtils.d(TAG, "http post response = " + temp);
+			response.setResponseBody(temp);
 		}
 		return response;
 	}
 
 	public static HttpResponseEntity httpPost(String url, List<NameValuePair> nameValuePairs) throws ClientProtocolException, IOException {
 
-		Log.d(TAG, "doPost url = " + url);
 		HttpResponseEntity response = new HttpResponseEntity();
 		response.setUrl(url);
 		HttpClient httpClient = new DefaultHttpClient();
@@ -227,7 +228,9 @@ public class HttpUtils {
 		response.setResponseCode(statusCode);
 		LogUtils.d(TAG, "statusCode = " + statusCode);
 		if (statusCode == HttpURLConnection.HTTP_OK) {
-			response.setResponseBody(EntityUtils.toString(resp.getEntity(), HTTP.UTF_8));
+			String temp = EntityUtils.toString(resp.getEntity(), HTTP.UTF_8);
+			LogUtils.d(TAG, "http post response = " + temp);
+			response.setResponseBody(temp);
 		}
 		return response;
 	}
