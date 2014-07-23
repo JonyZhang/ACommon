@@ -31,10 +31,10 @@ public class DialogUtils {
 		showProgressDialog(context, "请稍候...");
 	}
 	
-	public static Dialog showCustomDialog(Context context, int dialogStyle, int contenView, int gravity, boolean touchOutSide, LayoutParams params) {
+	public static void showCustomDialog(Context context, int dialogStyle, int contenView, int gravity, boolean touchOutSide, LayoutParams params) {
 		if (context == null) {
 			LogUtils.i(TAG, "Custom dialog new instance, but context is null");
-			return null;
+			return;
 		}
 		customDialog = new Dialog(context, dialogStyle);
 		View view = LayoutInflater.from(context).inflate(contenView, null);
@@ -43,7 +43,6 @@ public class DialogUtils {
 		Window dialogWindow = customDialog.getWindow();
         dialogWindow.setGravity(gravity);
 		customDialog.show();
-		return customDialog;
 	}
 	
 	public static void showCustomDialog(Context context, int dialogStyle, View view, int gravity, boolean touchOutSide, LayoutParams params) {
@@ -59,16 +58,27 @@ public class DialogUtils {
 		customDialog.show();
 	}
 	
-	public static Dialog showCustomDialog(Context context, int dialogStyle, int contenView) {
+	public static void showCustomDialog(Context context, int dialogStyle, int contenView, boolean touchOutSide) {
 		if (context == null) {
 			LogUtils.i(TAG, "Custom dialog new instance, but context is null");
-			return null;
+			return;
+		}
+		customDialog = new Dialog(context, dialogStyle);
+		View view = LayoutInflater.from(context).inflate(contenView, null);
+		customDialog.setContentView(view);
+		customDialog.setCanceledOnTouchOutside(touchOutSide);
+		customDialog.show();
+	}
+	
+	public static void showCustomDialog(Context context, int dialogStyle, int contenView) {
+		if (context == null) {
+			LogUtils.i(TAG, "Custom dialog new instance, but context is null");
+			return;
 		}
 		customDialog = new Dialog(context, dialogStyle);
 		customDialog.setContentView(contenView);
 		customDialog.setCanceledOnTouchOutside(false);
 		customDialog.show();
-		return customDialog;
 	}
 	
 	public static void showCustomWaitDialog (Context context) {
