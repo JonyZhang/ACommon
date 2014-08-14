@@ -1,6 +1,7 @@
 int attr behindOffset 0x7f010003
 int attr behindScrollScale 0x7f010005
 int attr behindWidth 0x7f010004
+int attr dividerWidth 0x7f010011
 int attr fadeDegree 0x7f01000b
 int attr fadeEnabled 0x7f01000a
 int attr isAutoLoadOnBottom 0x7f010010
@@ -94,6 +95,11 @@ int style drop_down_list_footer_progress_bar_style 0x7f080001
 int style drop_down_list_header_font_style 0x7f080002
 int style drop_down_list_header_progress_bar_style 0x7f080000
 int style drop_down_list_header_second_font_style 0x7f080003
+int[] styleable HorizontalListView { 0x010100e0, 0x01010129, 0x010103a5, 0x7f010011 }
+int styleable HorizontalListView_android_divider 1
+int styleable HorizontalListView_android_fadingEdgeLength 0
+int styleable HorizontalListView_android_requiresFadingEdge 2
+int styleable HorizontalListView_dividerWidth 3
 int[] styleable SlidingMenu { 0x7f010000, 0x7f010001, 0x7f010002, 0x7f010003, 0x7f010004, 0x7f010005, 0x7f010006, 0x7f010007, 0x7f010008, 0x7f010009, 0x7f01000a, 0x7f01000b, 0x7f01000c, 0x7f01000d }
 int styleable SlidingMenu_behindOffset 3
 int styleable SlidingMenu_behindScrollScale 5

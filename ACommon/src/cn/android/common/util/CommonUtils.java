@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -21,6 +22,7 @@ import android.support.v4.app.FragmentActivity;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.FloatMath;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
@@ -65,6 +67,9 @@ public class CommonUtils {
 	 * @param url
 	 */
 	public static void openUrl(Context context, String url) {
+		if (context == null) {
+			return;
+		}
 		if (TextUtils.isEmpty(url)) {
 			ToastUtils.shortToast(context, context.getResources().getString(R.string.open_url_fail));
 			return;
@@ -75,7 +80,12 @@ public class CommonUtils {
 		} else {
 			intent.setData(Uri.parse("http://" + url));
 		}
-		context.startActivity(intent);
+		try {
+			context.startActivity(intent);
+		} catch (Exception e) {
+			e.printStackTrace();
+			ToastUtils.shortToast(context, "Url has an error.");
+		}
 	}
 
 	public static final double EARTH_RADIUS = 6378.137;
@@ -138,6 +148,9 @@ public class CommonUtils {
 	 */
 	public static File takePhoto(Activity activity, int requestCode, String tempPath)
 			throws IOException {
+		if (activity == null) {
+			return null;
+		}
 		String sdStatus = Environment.getExternalStorageState();
 		if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { 
 			ToastUtils.longToast(activity, activity.getResources().getString(R.string.no_sdcard));
@@ -168,6 +181,9 @@ public class CommonUtils {
 	 * @param requestCode
 	 */
 	public static void choosePhoto(Activity activity, int requestCode) {
+		if (activity == null) {
+			return;
+		}
 		Intent intent = new Intent();
 		intent.setType("image/*");
 		intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -190,6 +206,9 @@ public class CommonUtils {
 	 * @return bitmap
 	 */
 	public static Bitmap takeScreenShot(Activity activity) {
+		if (activity == null) {
+			return null;
+		}
 		Bitmap bitmap = null;
 		View view = activity.getWindow().getDecorView();
 		view.setDrawingCacheEnabled(true);
@@ -212,6 +231,9 @@ public class CommonUtils {
 	 * @return android id
 	 */
 	public static String getAndroidId(Context context) {
+		if (context == null) {
+			return null;
+		}
 		return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
 	}
 	
@@ -221,10 +243,16 @@ public class CommonUtils {
 	 * @return
 	 */
 	public static String getIMEI(Context context) {
+		if (context == null) {
+			return null;
+		}
 		return ((TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
 	}
 	
 	public static void setScreenOrientation(FragmentActivity activity) {
+		if (activity == null) {
+			return;
+		}
 		if (isTablet(activity)) {
 			activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 		} else {
@@ -245,10 +273,19 @@ public class CommonUtils {
 //	    DisplayMetrics dm = new DisplayMetrics();  
 //	    display.getMetrics(dm);
 		
+		if (context == null) {
+			return false;
+		}
 		DisplayMetrics dm = context.getResources().getDisplayMetrics();
-		double x = Math.pow(dm.widthPixels / dm.xdpi, 2);
-		double y = Math.pow(dm.heightPixels / dm.ydpi, 2);
-		double screenInches = Math.sqrt(x + y);
+		int widthPixels = dm.widthPixels;
+		int heightPixels = dm.heightPixels;
+		double x = widthPixels * 1.0 / dm.densityDpi;
+		double y = heightPixels * 1.0 / dm.densityDpi;
+		LogUtils.d("display : widthPixels = " + widthPixels + " | heightPixels = " + heightPixels);
+		LogUtils.d("display : densityDpi = " + dm.densityDpi);
+		LogUtils.d("display : x = " + x + " | y = " + y);
+		double screenInches = Math.sqrt(x * x + y * y);
+		LogUtils.i("screen size = " + screenInches);
 		if (screenInches >= 6.0) {
 			return true;
 		}
@@ -256,8 +293,34 @@ public class CommonUtils {
 	}
 	
 	public static String getLocalLanguage(Context context) {
+		if (context == null) {
+			return "en";
+		}
 		return context.getResources().getConfiguration().locale.getLanguage();
 	}
 	
+	public static void sendEmail(Context context, String[] mailto, String subject, String body, String[] cc, String[] bcc, String filePath) {
+		if (context == null) {
+			return;
+		}
+		Intent intent = new Intent(Intent.ACTION_SEND);
+	     intent.putExtra(Intent.EXTRA_EMAIL, mailto);
+	     intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+	     intent.putExtra(Intent.EXTRA_TEXT, body);
+	     intent.putExtra(Intent.EXTRA_CC, cc);  
+	     intent.putExtra(Intent.EXTRA_BCC, bcc);  
+	     if (!TextUtils.isEmpty(filePath)) {
+	    	 File file = new File(filePath);
+	    	 intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file)); 
+	         if (file.getName().endsWith(".gz")) {
+	             intent.setType("application/x-gzip"); 
+	         } else if (file.getName().endsWith(".txt")) {
+	             intent.setType("text/plain");
+	         } else {
+	             intent.setType("application/octet-stream"); 
+	         }
+		}
+	     context.startActivity(Intent.createChooser	(intent, "Send email..."));
+	}
 
 }

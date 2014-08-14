@@ -77,7 +77,7 @@ public class SwipeAdapter extends BaseAdapter {
 //        holder.item_left_txt.setText("item " + thisPosition);
 //        holder.item_right_txt.setText("delete " + thisPosition);
 //        holder.item_right.setOnClickListener(new OnClickListener() {
-//            @Override
+//            @Override-
 //            public void onClick(View v) {
 //                if (mListener != null) {
 //                    mListener.onRightClick(v, thisPosition);

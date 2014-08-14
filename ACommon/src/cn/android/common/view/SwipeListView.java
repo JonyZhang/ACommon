@@ -21,7 +21,7 @@ public class SwipeListView extends ListView {
 
     private float mFirstY;
 
-    private int mRightViewWidth = 300;
+    private int mRightViewWidth = 240;
 
     // private boolean mIsInAnimation = false;
     private final int mDuration = 100;
@@ -85,11 +85,11 @@ public class SwipeListView extends ListView {
                 if (mIsShown && (mPreItemView != mCurrentItemView || isHitCurItemLeft(lastX))) {
                     System.out.println("1---> hiddenRight");
                     /**
-                     * 情况�?��
+                     * 情况�?��
                      * <p>
-                     * �?��Item的右边布�?��经显示，
+                     * �?��Item的右边布�?��经显示，
                      * <p>
-                     * 这时候点击任意一个item, 那么那个右边布局显示的item隐藏其右边布�?                     */
+                     * 这时候点击任意一个item, 那么那个右边布局显示的item隐藏其右边布�?                     */
                     hiddenRight(mPreItemView);
                 }
                 break;
@@ -193,9 +193,9 @@ public class SwipeListView extends ListView {
                         /**
                          * 情况二：
                          * <p>
-                         * �?��Item的右边布�?��经显示，
+                         * �?��Item的右边布�?��经显示，
                          * <p>
-                         * 这时候左右滑动另外一个item,那个右边布局显示的item隐藏其右边布�?                         * <p>
+                         * 这时候左右滑动另外一个item,那个右边布局显示的item隐藏其右边布�?                         * <p>
                          * 向左滑动只触发该情况，向右滑动还会触发情况五
                          */
                         hiddenRight(mPreItemView);
@@ -207,7 +207,9 @@ public class SwipeListView extends ListView {
 
                     // can't move beyond boundary
                     if (dx < 0 && dx > -mRightViewWidth) {
-                        mCurrentItemView.scrollTo((int)(-dx), 0);
+                    	if (mCurrentItemView != null) {
+                    		mCurrentItemView.scrollTo((int)(-dx), 0);
+						}
                     }
 
                     return true;
@@ -216,9 +218,9 @@ public class SwipeListView extends ListView {
                         /**
                          * 情况三：
                          * <p>
-                         * �?��Item的右边布�?��经显示，
+                         * �?��Item的右边布�?��经显示，
                          * <p>
-                         * 这时候上下滚动ListView,那么那个右边布局显示的item隐藏其右边布�?                         */
+                         * 这时候上下滚动ListView,那么那个右边布局显示的item隐藏其右边布�?                         */
                         hiddenRight(mPreItemView);
                     }
                 }
@@ -232,21 +234,25 @@ public class SwipeListView extends ListView {
                     /**
                      * 情况四：
                      * <p>
-                     * �?��Item的右边布�?��经显示，
+                     * �?��Item的右边布�?��经显示，
                      * <p>
-                     * 这时候左右滑动当前一个item,那个右边布局显示的item隐藏其右边布�?                     */
+                     * 这时候左右滑动当前一个item,那个右边布局显示的item隐藏其右边布�?                     */
                     hiddenRight(mPreItemView);
                 }
 
                 if (mIsHorizontal != null && mIsHorizontal) {
                     if (mFirstX - lastX > mRightViewWidth / 2) {
-                        showRight(mCurrentItemView);
+                    	if (mCurrentItemView != null) {
+                    		showRight(mCurrentItemView);
+						}
                     } else {
                         /**
                          * 情况五：
                          * <p>
-                         * 向右滑动�?��item,且滑动的距离超过了右边View的宽度的�?��，隐藏之�?                         */
-                        hiddenRight(mCurrentItemView);
+                         * 向右滑动�?��item,且滑动的距离超过了右边View的宽度的�?��，隐藏之�?                         */
+                    	if (mCurrentItemView != null) {
+                    		hiddenRight(mCurrentItemView);
+						}
                     }
 
                     return true;
@@ -260,7 +266,9 @@ public class SwipeListView extends ListView {
 
     private void clearPressedState() {
         // TODO current item is still has background, issue
-        mCurrentItemView.setPressed(false);
+    	if (mCurrentItemView != null) {
+    		mCurrentItemView.setPressed(false);
+		}
         setPressed(false);
         refreshDrawableState();
         // invalidate();

@@ -32,4 +32,18 @@ public class LogUtils {
 		i(tag, String.format(msg, args));
 	}
 	
+	public static void e(String msg) {
+		e("debug", msg);
+	}
+	
+	public static void e(String tag, String msg) {
+		if (debug) {
+			android.util.Log.e(tag, msg);
+		}
+	}
+
+	public static void e(String tag, String msg, Object... args) {
+		e(tag, String.format(msg, args));
+	}
+	
 }

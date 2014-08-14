@@ -6,10 +6,16 @@ import android.widget.Toast;
 public class ToastUtils {
 	
 	public static void shortToast(Context context, String info) {
+		if (context == null) {
+			return;
+		}
 		Toast.makeText(context, info, Toast.LENGTH_SHORT).show();
 	}
 	
 	public static void longToast(Context context, String info) {
+		if (context == null) {
+			return;
+		}
 		Toast.makeText(context, info, Toast.LENGTH_LONG).show();
 	}
 

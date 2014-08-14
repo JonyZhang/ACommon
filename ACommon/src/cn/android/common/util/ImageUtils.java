@@ -1,6 +1,9 @@
 package cn.android.common.util;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -10,10 +13,10 @@ import java.net.URL;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
+import android.text.TextUtils;
 
 /**
  * ImageUtils
@@ -220,6 +223,20 @@ public class ImageUtils {
         closeInputStream(stream);
 		return bitmap;
     }
+    
+    public static Bitmap getBitmapFromFile (String path, int sampleSize) throws IOException {
+    	if (TextUtils.isEmpty(path)) {
+    		LogUtils.i(TAG, "get bitmap from file is null");
+			return null;
+		}
+    	File file = new File(path);
+    	if (!file.exists()) {
+    		LogUtils.i(TAG, "get bitmap from file not exists.");
+    		return null;
+		}
+    	FileInputStream inputStream = new FileInputStream(file);
+    	return getBitmapFromInputStream(inputStream, sampleSize);
+    }
 
 
     /**
@@ -353,10 +370,10 @@ public class ImageUtils {
 	 * @return Bitmap
 	 */
 	public static Bitmap rotaingImageView(int angle, Bitmap bitmap) {
-		// Ðý×ªÍ¼Æ¬ ¶¯×÷
+		// ï¿½ï¿½×ªÍ¼Æ¬ ï¿½ï¿½ï¿½ï¿½
 		Matrix matrix = new Matrix();
 		matrix.postRotate(angle);
-		// ´´½¨ÐÂµÄÍ¼Æ¬
+		// ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½Í¼Æ¬
 		Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 		return resizedBitmap;
 	}
@@ -369,10 +386,10 @@ public class ImageUtils {
 	 * @return Bitmap
 	 */
 	public static Bitmap rotaingImageView(String path, Bitmap bitmap) {
-		// Ðý×ªÍ¼Æ¬ ¶¯×÷
+		// ï¿½ï¿½×ªÍ¼Æ¬ ï¿½ï¿½ï¿½ï¿½
 		Matrix matrix = new Matrix();
 		matrix.postRotate(readPictureDegree(path));
-		// ´´½¨ÐÂµÄÍ¼Æ¬
+		// ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½Í¼Æ¬
 		Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 		return resizedBitmap;
 	}
