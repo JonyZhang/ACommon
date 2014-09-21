@@ -28,6 +28,9 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
@@ -199,7 +202,10 @@ public class HttpUtils {
 
 		HttpResponseEntity response = new HttpResponseEntity();
 		response.setUrl(url);
-		HttpClient httpClient = new DefaultHttpClient();
+		HttpParams httpParameters = new BasicHttpParams();// Set the timeout in milliseconds until a connection is established.  
+	    HttpConnectionParams.setConnectionTimeout(httpParameters, 20000);// Set the default socket timeout (SO_TIMEOUT) // in milliseconds which is the timeout for waiting for data.  
+	    HttpConnectionParams.setSoTimeout(httpParameters, 20000);  
+		HttpClient httpClient = new DefaultHttpClient(httpParameters);
 		HttpPost httpPost = new HttpPost(url);
 		httpPost.setEntity(entity);
 
@@ -219,7 +225,10 @@ public class HttpUtils {
 
 		HttpResponseEntity response = new HttpResponseEntity();
 		response.setUrl(url);
-		HttpClient httpClient = new DefaultHttpClient();
+		HttpParams httpParameters = new BasicHttpParams();// Set the timeout in milliseconds until a connection is established.  
+	    HttpConnectionParams.setConnectionTimeout(httpParameters, 20000);// Set the default socket timeout (SO_TIMEOUT) // in milliseconds which is the timeout for waiting for data.  
+	    HttpConnectionParams.setSoTimeout(httpParameters, 20000);  
+		HttpClient httpClient = new DefaultHttpClient(httpParameters);
 		HttpPost httpPost = new HttpPost(url);
 		httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
 
